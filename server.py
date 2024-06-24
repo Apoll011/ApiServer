@@ -8,10 +8,17 @@ class Blueprint:
     """
     Blueprint class is used to define routes for the API.
     """
+
     route_functions = {}
     """
     The dictionary of the routes and the function to execute on that route.
     """
+
+    builtin_routes = {}
+    """
+    The dictionary of the builtins routes and the function to execute on that route.
+    """
+
     pre = ""
 
     def __init__(self, main_route: str = ""):
@@ -74,6 +81,8 @@ class Blueprint:
         try:
             if route in self.route_functions.keys():
                 return json.dumps({"response": self.route_functions[route](value), "code": 200, "time": time.time() - time_s})
+            elif route in self.builtin_routes.keys():
+                return json.dumps({"response": self.route_functions[route](self), "code": 200, "time": time.time() - time_s})
             else:
                 return json.dumps({"response": "invalid", "code": 404, "time": time.time() - time_s})
         except Exception as e:
@@ -90,11 +99,6 @@ class API(Blueprint):
 
     connected_client_text = "Host connected at #addr#."
     disconnected_client_text = "Host disconnected from #addr#."
-
-    route_functions = {}
-    """
-    The dictionary of the routes and the function to execute on that route.
-    """
 
     def __init__(self, host: str, port: int):
         """
@@ -118,10 +122,9 @@ class API(Blueprint):
             "auth": self.__auth,
             "close": self.close
         }
-        self.route_functions.update(self.builtin_routes)
-
+        
     def __auth(self):
-        pass
+        return {"on": True}
     
     def define_route(self, host: str, port: int):
         """
@@ -204,7 +207,8 @@ class API(Blueprint):
                 break
             received_json = json.loads(data.decode("utf-8"))
             response = self.call(received_json["route"], received_json["value"])
-            conn.send(response.encode("utf-8"))
+            if not self.closed:
+                conn.send(response.encode("utf-8"))
         conn.close()
 
     def close(self):
