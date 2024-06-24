@@ -8,7 +8,10 @@ class Blueprint:
     """
     Blueprint class is used to define routes for the API.
     """
-    defs = {}
+    route_functions = {}
+    """
+    The dictionary of the routes and the function to execute on that route.
+    """
     pre = ""
 
     def __init__(self, main_route: str = ""):
@@ -31,7 +34,7 @@ class Blueprint:
             A decorator function.
         """
         def decorator(fun):
-            self.defs[self.pre + "/" + route] = fun
+            self.route_functions[self.pre + "/" + route] = fun
             def wrapper(*args, **kwargs):
                 return fun(*args, **kwargs)
             return wrapper
@@ -49,6 +52,13 @@ class API(Blueprint):
     connected_client_text = "Host connected at #addr#."
     disconnected_client_text = "Host disconnected from #addr#."
 
+    route_functions = {}
+    """
+    The dictionary of the routes and the function to execute on that route.
+    """
+
+    
+
     def __init__(self, host: str, port: int):
         """
         Initializes the API object.
@@ -58,9 +68,15 @@ class API(Blueprint):
             port (int): The port number.
         """
         super().__init__()
-        self.defs = {}
+
+        self.route_functions = {}
+        
+
         self.define_route(host, port)
         self.closed = False
+
+    def auth(self):
+        pass
 
     def register_blueprint_list(self, list_blueprint: list):
         """
@@ -79,7 +95,7 @@ class API(Blueprint):
         Args:
             blueprint (Blueprint): A blueprint.
         """
-        self.defs.update(blueprint.defs)
+        self.route_functions.update(blueprint.route_functions)
 
     def call(self, route: str, value: str):
         """
@@ -94,8 +110,8 @@ class API(Blueprint):
         """
         time_s = time.time()
         try:
-            if route in self.defs.keys():
-                return json.dumps({"response": self.defs[route](value), "code": 200, "time": time.time() - time_s})
+            if route in self.route_functions.keys():
+                return json.dumps({"response": self.route_functions[route](value), "code": 200, "time": time.time() - time_s})
             else:
                 return json.dumps({"response": "invalid", "code": 404, "time": time.time() - time_s})
         except Exception as e:
