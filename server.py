@@ -39,6 +39,24 @@ class Blueprint:
                 return fun(*args, **kwargs)
             return wrapper
         return decorator
+    def register_blueprint_list(self, list_blueprint: list['Blueprint']):
+        """
+        Registers a list of blueprints.
+
+        Args:
+            list_blueprint (list): A list of blueprints.
+        """
+        for blueprint in list_blueprint:
+            self.register_blueprint(blueprint)
+
+    def register_blueprint(self, blueprint: 'Blueprint'):
+        """
+        Registers a blueprint.
+
+        Args:
+            blueprint (Blueprint): A blueprint.
+        """
+        self.route_functions.update(blueprint.route_functions)
 
 class API(Blueprint):
     """
@@ -71,31 +89,11 @@ class API(Blueprint):
 
         self.route_functions = {}
         
-
         self.define_route(host, port)
         self.closed = False
 
     def auth(self):
         pass
-
-    def register_blueprint_list(self, list_blueprint: list):
-        """
-        Registers a list of blueprints.
-
-        Args:
-            list_blueprint (list): A list of blueprints.
-        """
-        for blueprint in list_blueprint:
-            self.register_blueprint(blueprint)
-
-    def register_blueprint(self, blueprint: Blueprint):
-        """
-        Registers a blueprint.
-
-        Args:
-            blueprint (Blueprint): A blueprint.
-        """
-        self.route_functions.update(blueprint.route_functions)
 
     def call(self, route: str, value: str):
         """
