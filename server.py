@@ -92,9 +92,9 @@ class API(Blueprint):
                 self.conect_client(conn, addr)
 
     def conect_client(self, conn, addr):
-        print(f"\33[32mConection from alex. Host \33[93m{addr}\33[32m connected\33[0m")
+        print(f"\33[32m{self.connected_client_text.replace('#addr#', str(addr))}\33[0m")
         self.client_main_loop(conn)
-        print(f"\33[31mConection with alex. Host \33[93m{addr}\33[31m closed\33[0m")
+        print(f"\33[31m{self.disconnected_client_text.replace('#addr#', str(addr))}\33[0m")
 
     def client_main_loop(self, conn):
         while True:
