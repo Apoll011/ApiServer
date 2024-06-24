@@ -53,8 +53,8 @@ class ApiClient:
         """
         Authenticates the client.
         """
-        promise = self.call_route_async("auth")
-        promise.then(lambda data: self.__auth(data))
+        data = self.call_route("auth")
+        self.__auth(data)
     
     def __auth(self, data: ApiResponse):
         """
