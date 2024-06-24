@@ -97,6 +97,7 @@ class API(Blueprint):
     """
 
     
+    
 
     def __init__(self, host: str, port: int):
         """
@@ -110,8 +111,17 @@ class API(Blueprint):
 
         self.route_functions = {}
         
+        self.__register_builtins()
+
         self.define_route(host, port)
         self.closed = False
+
+    def __register_builtins(self):
+        self.builtin_routes = {
+            "auth": self.auth,
+            "close": self.close
+        }
+        self.route_functions.update(self.builtin_routes)
 
     def auth(self):
         pass
