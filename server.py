@@ -96,9 +96,6 @@ class API(Blueprint):
     The dictionary of the routes and the function to execute on that route.
     """
 
-    
-    
-
     def __init__(self, host: str, port: int):
         """
         Initializes the API object.
@@ -118,12 +115,12 @@ class API(Blueprint):
 
     def __register_builtins(self):
         self.builtin_routes = {
-            "auth": self.auth,
+            "auth": self.__auth,
             "close": self.close
         }
         self.route_functions.update(self.builtin_routes)
 
-    def auth(self):
+    def __auth(self):
         pass
     
     def define_route(self, host: str, port: int):
@@ -137,7 +134,7 @@ class API(Blueprint):
         self.HOST = host
         self.PORT = port
 
-    def print_header_text(self, text: str, size: int = 2):
+    def __print_header_text(self, text: str, size: int = 2):
         """
         Prints a header text.
 
@@ -156,16 +153,16 @@ class API(Blueprint):
         """
         os.system("clear")
         try:
-            self.start_server()
-            self.print_header_text(f"Started API Server on address \33[93m{self.HOST}:{self.PORT}", 1)
-            self.main_loop()
+            self.__start_server()
+            self.__print_header_text(f"Started API Server on address \33[93m{self.HOST}:{self.PORT}", 1)
+            self.__main_loop()
         except KeyboardInterrupt:
             self.close()
         finally:
             self.server_socket.close()
-            self.print_header_text(f"Closed API Server", 1)
+            self.__print_header_text(f"Closed API Server", 1)
 
-    def start_server(self):
+    def __start_server(self):
         """
         Starts the server.
         """
@@ -173,16 +170,16 @@ class API(Blueprint):
         self.server_socket.bind((self.HOST, self.PORT))
         self.server_socket.listen()
 
-    def main_loop(self):
+    def __main_loop(self):
         """
         Main loop of the API server.
         """
         while not self.closed:
             conn, addr = self.server_socket.accept()
             with conn:
-                self.connect_client(conn, addr)
+                self.__connect_client(conn, addr)
 
-    def connect_client(self, conn: socket.socket, addr: tuple):
+    def __connect_client(self, conn: socket.socket, addr: tuple):
         """
         Handles a client connection.
 
@@ -191,10 +188,10 @@ class API(Blueprint):
             addr (tuple): The client address.
         """
         print(f"\33[32m{self.connected_client_text.replace('#addr#', str(addr))}\33[0m")
-        self.client_main_loop(conn)
+        self.__client_main_loop(conn)
         print(f"\33[31m{self.disconnected_client_text.replace('#addr#', str(addr))}\33[0m")
 
-    def client_main_loop(self, conn: socket.socket):
+    def __client_main_loop(self, conn: socket.socket):
         """
         Main loop of the client connection.
 
