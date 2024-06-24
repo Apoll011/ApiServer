@@ -39,6 +39,7 @@ class Blueprint:
                 return fun(*args, **kwargs)
             return wrapper
         return decorator
+    
     def register_blueprint_list(self, list_blueprint: list['Blueprint']):
         """
         Registers a list of blueprints.
@@ -57,6 +58,26 @@ class Blueprint:
             blueprint (Blueprint): A blueprint.
         """
         self.route_functions.update(blueprint.route_functions)
+
+    def call(self, route: str, value: str):
+        """
+        Calls a route function.
+
+        Args:
+            route (str): The route to call.
+            value (str): The value to pass to the route function.
+
+        Returns:
+            A JSON response.
+        """
+        time_s = time.time()
+        try:
+            if route in self.route_functions.keys():
+                return json.dumps({"response": self.route_functions[route](value), "code": 200, "time": time.time() - time_s})
+            else:
+                return json.dumps({"response": "invalid", "code": 404, "time": time.time() - time_s})
+        except Exception as e:
+            return json.dumps({"response": str(e), "code": 500, "time": time.time() - time_s})
 
 class API(Blueprint):
     """
@@ -94,27 +115,7 @@ class API(Blueprint):
 
     def auth(self):
         pass
-
-    def call(self, route: str, value: str):
-        """
-        Calls a route function.
-
-        Args:
-            route (str): The route to call.
-            value (str): The value to pass to the route function.
-
-        Returns:
-            A JSON response.
-        """
-        time_s = time.time()
-        try:
-            if route in self.route_functions.keys():
-                return json.dumps({"response": self.route_functions[route](value), "code": 200, "time": time.time() - time_s})
-            else:
-                return json.dumps({"response": "invalid", "code": 404, "time": time.time() - time_s})
-        except Exception as e:
-            return json.dumps({"response": str(e), "code": 500, "time": time.time() - time_s})
-
+    
     def define_route(self, host: str, port: int):
         """
         Defines the host and port.
