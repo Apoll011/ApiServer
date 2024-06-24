@@ -113,19 +113,12 @@ print(response.response)  # Output: "Hello, World!"
 promise = client.call_route_async("hello", "World")
 promise.then(lambda data: print(data.response))  # Output: "Hello, World!"
 ```
-Authenticating To authenticate with the API server, call the authenticate method:
 
-```python
-client.authenticate()
-if client.active:
-    print("Authenticated successfully!")
-```
 Example
 Here is an example of creating an API client and calling a route:
 
 ```python
 client = ApiClient("localhost", 8080)
-client.authenticate()
 if client.active:
     response = client.call_route("hello", "World")
     print(response.response)  # Output: "Hello, World!"
