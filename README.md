@@ -1,23 +1,23 @@
-#API Server Documentation
+# API Server Documentation
 This API server is designed to be a flexible and easy-to-use framework for building RESTful APIs. It provides a simple way to define routes, handle requests, and return responses.
 
-##Features
-###Blueprint System
+## Features
+### Blueprint System
 The API server uses a blueprint system to define routes. A blueprint is an instance of the Blueprint class, which can be used to define multiple routes. Blueprints can be registered with the API server using the register_blueprint method.
 
-###Route Definition
+### Route Definition
 Routes can be defined using the route decorator provided by the Blueprint class. The decorator takes a route string as an argument and returns a decorator function that can be used to decorate a route function.
 
-###Request Handling
+### Request Handling
 The API server handles requests by calling the corresponding route function and passing the request value as an argument. The route function can return a response, which is then serialized to JSON and sent back to the client.
 
-###Client Connection Handling
+### Client Connection Handling
 The API server can handle multiple client connections simultaneously. When a client connects, the connect_client method is called, which starts a new thread to handle the client connection.
 
-###Error Handling
+### Error Handling
 The API server provides built-in error handling. If an exception occurs while handling a request, the API server catches the exception and returns a JSON response with a `500` status code.
 
-##Usage
+## Usage
 Creating an API Server
 To create an API server, create an instance of the API class and pass the host and port as arguments:
 
@@ -57,7 +57,7 @@ To start the API server, call the serve method:
 api.serve()
 ```
 Making Requests
-To make a request to the API server, connect to the server using a socket and send a JSON request:
+To request the API server, connect to the server using a socket and send a JSON request:
 
 ```python
 import socket
@@ -71,7 +71,7 @@ sock.send(json.dumps(request).encode("utf-8"))
 response = sock.recv(1024)
 print(response.decode("utf-8"))  # Output: {"response": "Hello, World!", "code": 200, "time": 0.01}
 ```
-##Example
+## Example
 Here is an example of creating an API server with a single route:
 
 ```python
@@ -89,11 +89,11 @@ api.serve()
 ```
 This example creates an API server that listens on `localhost:8080` and defines a single route `/hello` that takes a value parameter and returns a greeting message.
 
-##License
+## License
 This API server is licensed under the MIT License. See the LICENSE file for details.
 
-##Contributing
-Contributions are welcome! If you'd like to contribute to the API server, please fork the repository and submit a pull request.
+## Contributing
+Contributions are welcome! If you want to contribute to the API server, please fork the repository and submit a pull request.
 
-##Acknowledgments
-This API server was originally developed for Alex, but it can be used for any application.
+## Acknowledgments
+This API server was originally developed for Alex but can be used for any application.
