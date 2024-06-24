@@ -66,7 +66,7 @@ class ApiClient:
         if data.response["on"]:
             self.active = True
     
-    def close(self):
+    def close_server(self):
         """
         Close the server
         """
