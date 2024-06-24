@@ -70,7 +70,7 @@ class ApiClient:
         """
         Close the server
         """
-        self.call_route("close")
+        self.__conect_and_send("close")
         self.active = False
   
     def call_route_async(self, route, value: str | dict[str, str] = ""):
