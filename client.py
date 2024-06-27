@@ -26,7 +26,7 @@ class ApiResponse:
         Args:
             data (dict): The response data.
         """
-        self.response = data["response"]
+        self.response = data["responce"]
         self.code = data["code"]
         self.time = data["time"]
 

@@ -81,13 +81,13 @@ class Blueprint:
         time_s = time.time()
         try:
             if route in self.route_functions.keys():
-                return json.dumps({"response": self.route_functions[route](value), "code": 200, "time": time.time() - time_s})
+                return json.dumps({"responce": self.route_functions[route](value), "code": 200, "time": time.time() - time_s})
             elif route in self.builtin_routes.keys():
-                return json.dumps({"response": self.builtin_routes[route](), "code": 200, "time": time.time() - time_s})
+                return json.dumps({"responce": self.builtin_routes[route](), "code": 200, "time": time.time() - time_s})
             else:
-                return json.dumps({"response": "invalid", "code": 404, "time": time.time() - time_s})
+                return json.dumps({"responce": "invalid", "code": 404, "time": time.time() - time_s})
         except Exception as e:
-            return json.dumps({"response": str(e), "code": 500, "time": time.time() - time_s})
+            return json.dumps({"responce": str(e), "code": 500, "time": time.time() - time_s})
 
 class API(Blueprint):
     """
