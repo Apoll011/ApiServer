@@ -41,7 +41,7 @@ class Blueprint:
             A decorator function.
         """
         def decorator(fun):
-            p = "" if self.pre == "" else + "/"
+            p = "" if self.pre == "" else  "/"
             self.route_functions[self.pre + p + route] = fun
             def wrapper(*args, **kwargs):
                 return fun(*args, **kwargs)
