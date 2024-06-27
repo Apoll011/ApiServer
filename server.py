@@ -48,7 +48,7 @@ class Blueprint:
             return wrapper
         return decorator
     
-    def register_blueprint_list(self, list_blueprint: list['Blueprint']):
+    def register_blueprint_list(self, list_blueprint: list):
         """
         Registers a list of blueprints.
 
