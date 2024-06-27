@@ -1,6 +1,6 @@
 import json
 import socket
-from promise.promise import Promise
+from .promise.promise import Promise
 
 class ApiResponse:
     response: dict
