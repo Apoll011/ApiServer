@@ -3,6 +3,7 @@ import time
 import shutil
 import socket
 import os
+import threading
 
 class Blueprint:
     """
@@ -181,7 +182,7 @@ class API(Blueprint):
         """
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_socket.bind((self.HOST, self.PORT))
-        self.server_socket.listen()
+        self.server_socket.listen(5)
 
     def __main_loop(self):
         """
@@ -189,8 +190,8 @@ class API(Blueprint):
         """
         while not self.closed:
             conn, addr = self.server_socket.accept()
-            with conn:
-                self.__connect_client(conn, addr)
+            client_thread = threading.Thread(target=self.__connect_client, args=(conn, addr))
+            client_thread.start()
 
     def __connect_client(self, conn: socket.socket, addr: tuple):
         """
