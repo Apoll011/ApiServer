@@ -42,13 +42,16 @@ class Blueprint:
             A decorator function.
         """
         def decorator(fun):
-            p = "" if self.pre == "" else  "/"
-            self.route_functions[self.pre + p + route] = fun
+            self.set_route(route, fun)        
             def wrapper(*args, **kwargs):
                 return fun(*args, **kwargs)
             return wrapper
         return decorator
     
+    def set_route(self, route, fun):
+        p = "" if self.pre == "" else  "/"
+        self.route_functions[self.pre + p + route] = fun
+
     def register_blueprint_list(self, list_blueprint: list):
         """
         Registers a list of blueprints.
