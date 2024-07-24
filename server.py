@@ -106,7 +106,11 @@ class API(Blueprint):
     conections = 0
     active = 0
 
-    def __init__(self, host: str, port: int):
+    max: int
+
+    conections_func_send = {}
+
+    def __init__(self, host: str, port: int, max_conections = 5):
         """
         Initializes the API object.
 
@@ -117,6 +121,8 @@ class API(Blueprint):
         super().__init__()
 
         self.route_functions = {}
+
+        self.max = max_conections
         
         self.__register_builtins()
 
@@ -207,7 +213,9 @@ class API(Blueprint):
         self.conections += 1
         self.active += 1
         self.screen()
+        self.conections_func_send[addr] = conn
         self.__client_main_loop(conn)
+        self.conections_func_send[addr] = None
         self.active -= 1
         self.screen()
 
