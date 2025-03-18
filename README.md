@@ -29,6 +29,14 @@ blueprint = Blueprint()
 def hello_world(value):
     return f"Hello, {value}!"
 ```
+Or use the api class itself:
+```python
+api = API()
+
+@api.route("hello")
+def hello_world(value):
+    return f"Hello, {value}!"
+```
 Registering Blueprints
 To register a blueprint with the API server, use the register_blueprint method:
 
